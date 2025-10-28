@@ -2,6 +2,7 @@
 この[プロジェクト](https://github.com/TrueRyoB/shukatsu-helper)をWebAssemblyで実行します。
 音声入力に対応予定。
 
+~~~:model
 my-react-app/
 ├── public/
 │   └── vite.svg
@@ -26,6 +27,7 @@ my-react-app/
 ├── package.json
 ├── vite.config.js          # Vite configuration
 └── eslint.config.js        # ESLint configuration
+~~~
 
 # TODO
 - [ ] Reactで基本的なUIを作る
