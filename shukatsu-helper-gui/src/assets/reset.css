@@ -21,6 +21,9 @@
 .mic-svg {
   mask-image: url(./mic.svg);
 }
+.send-svg {
+  mask-image: url(./send.svg);
+}
 
 html, body, div, span{
   margin: 0;

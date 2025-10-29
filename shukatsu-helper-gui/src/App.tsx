@@ -1,7 +1,7 @@
 // import { useState } from 'react'
 import './App.css'
 import './assets/reset.css'
-import AskBox from './components/AskBox/AskBox'
+import AskBox from './components/AskBox'
 
 function App() {
   // const [count, setCount] = useState(0)
