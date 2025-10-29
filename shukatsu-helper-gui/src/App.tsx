@@ -1,33 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import { useState } from 'react'
 import './App.css'
+import './assets/reset.css'
+import React from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
+  // const appname:string = '就活ヘルパGUI';
+  const round:number= 1;
+  const totalround:number=10;
+
+  const placeholder:string="Answer Anything";
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if(event.shiftKey && event.key === 'Enter') {
+      console.log('Message delivered');
+      //TODO:
+      return;
+    }
+
+    if(event.key === 'Escape') event.preventDefault();
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="body">
+        <span className="toggleBtn"></span>
+        <div className="left-pane">
+          <span>test</span>
+        </div>
+        <div className="chat-pane">
+          <div className="header">
+            <span className="title">就活ヘルパGUI</span>
+            <span className="import-svg"></span>
+          </div>
+          <div className="main">
+            <span className="counter">{round}/{totalround}</span>
+            <span className="invite-message center">面接練習を始める</span>
+          </div>
+          <div className="footer">
+            <div className="chatbox">
+              <input onKeyDown={handleKeyPress} type="text" className="user-input" placeholder={placeholder} />
+              <span className="mic-svg"></span>
+              {/* input内文字が一以上の時、送信ボタンに切り替える */}
+              {/* hover時にうっすら白くする */}
+            </div>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
