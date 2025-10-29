@@ -24,7 +24,7 @@
 
 html, body, div, span{
   margin: 0;
-  padding: 0;
+  /* padding: 0; */
   box-sizing: border-box;
 }
 
@@ -33,4 +33,11 @@ div {
 }
 div::-webkit-scrollbar {
   display:none;
+}
+
+input {
+  border: transparent;
+}
+input:focus {
+  outline:transparent;
 }

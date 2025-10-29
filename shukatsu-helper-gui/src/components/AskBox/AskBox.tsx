@@ -14,9 +14,9 @@ const AskBox = () => {
   };
 
   return (
-    <div className="askbox flex flex-row justify-between bg-black w-full px-[8px] py-1 text-white">
-      <input onKeyDown={shootOnEnter} type="text" placeholder={ph}/>
-      <span className="mic-svg"></span>
+    <div className="askbox flex flex-row justify-between bg-black w-full px-[1.5rem] py-[1rem] rounded-[16px]">
+      <input className="text-white placeholder-white flex-grow" onKeyDown={shootOnEnter} type="text" placeholder={ph}/>
+      <span className="mic-svg text-white"></span>
       {/* input内文字が一以上の時、送信ボタンに切り替える */}
       {/* hover時にうっすら白くする */}
       {/* 自身の高さを自動調整 */}

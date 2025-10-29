@@ -9,8 +9,6 @@ function App() {
   const round:number= 1;
   const totalround:number=10;
 
-  const placeholder:string="Answer Anything";
-
   return (
     <>
       <div className="body">
@@ -29,10 +27,6 @@ function App() {
           </div>
           <div className="footer">
             <AskBox />
-            <div className="chatbox">
-              <input type="text" className="user-input" placeholder={placeholder} />
-              <span className="mic-svg"></span>
-            </div>
           </div>
         </div>
       </div>
