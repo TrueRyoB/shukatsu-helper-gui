@@ -1,13 +1,22 @@
-// import { useState } from 'react'
+import { useRef } from 'react'
 import './App.css'
 import './assets/reset.css'
 import AskBox from './components/AskBox'
+import ChatPane from './components/ChatPane'
 
 function App() {
-  // const [count, setCount] = useState(0)
-  // const appname:string = '就活ヘルパGUI';
   const round:number= 1;
   const totalround:number=10;
+
+  const chatRef = useRef<{insertNewPlayerMessage: (s:string, onFinish?:()=>void)=>void}>(null);
+
+  const handleQuery = (s:string) => {
+    chatRef.current?.insertNewPlayerMessage(s, () => {
+      console.log("text inserted");
+    });
+  };
+
+  const inputEnabled:boolean=true;
 
   return (
     <>
@@ -23,10 +32,11 @@ function App() {
           </div>
           <div className="main">
             <span className="counter">{round}/{totalround}</span>
-            <span className="invite-message center">面接練習を始める</span>
+            {/* <span className="invite-message center">面接練習を始める</span> */}
+            <ChatPane ref={chatRef} />
           </div>
           <div className="footer">
-            <AskBox />
+            <AskBox submitQuery={handleQuery} inputEnabled={inputEnabled} />
           </div>
         </div>
       </div>
