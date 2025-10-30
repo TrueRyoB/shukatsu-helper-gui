@@ -55,7 +55,8 @@ const ChatPane = forwardRef((_, ref) => {
   
   const handleAnotherPlayerMessage = useCallback(
     async (s:string, onFinish?: ()=>void) => {
-      await playMessage({isInterviewer:false, content:s}, 1, onFinish);
+      console.log("onlive: ", onlive);
+      await playMessage({isInterviewer:false, content:s}, 0, onFinish);
     },
     [onlive.length]
   );
@@ -68,7 +69,6 @@ const ChatPane = forwardRef((_, ref) => {
   const createQuestionGenerator = (): Generator => {
     let cnter:number = 0;
     let nhukabori:number = 0;
-    const picked = new Set<number>;
 
     return {
       async poseQuestion(onFinish?:()=>void):Promise<boolean> {
@@ -96,28 +96,18 @@ const ChatPane = forwardRef((_, ref) => {
     };
   };
 
-  //deprecated
-  const poseAnotherQuestion = useCallback(
-    //1. 文章を抽選する (深堀か新規かのフラグが重要)
-    //2. 思考している...というUIを表示させる
-    //3. flushして、質問を再生する (音声対応できれば尚良い)
-
-    async (s:string, onFinish?: ()=>void) => {
-      await playMessage({isInterviewer:false, content:s}, 10, onFinish);
-    },
-    [onlive.length]
-  );
+  const gen = createQuestionGenerator();
 
   useImperativeHandle(ref, ()=> ({
     handleAnotherPlayerMessage,
-    poseAnotherQuestion,
+    poseQuestion: gen.poseQuestion,
   }));
 
   return (
     <>
     {
       onlive.map((msg:Message, i:number)=>(
-        <div key={i} className={`${msg.isInterviewer?'text-blue-500':''} flex flex-row flex-wrap`}>
+        <div key={i} className={`${msg.isInterviewer?'text-blue-500':'text-black'} flex flex-row flex-wrap`}>
           {msg.content}
         </div>
       ))

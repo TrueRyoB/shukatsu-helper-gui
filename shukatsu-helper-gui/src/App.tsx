@@ -12,7 +12,7 @@ function App() {
 
   const handleQuery = (s:string) => {
     chatRef.current?.handleAnotherPlayerMessage(s, () => {
-      console.log("text inserted");
+      //TODO: do something
     });
   };
 
