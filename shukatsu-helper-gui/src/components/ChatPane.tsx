@@ -29,7 +29,7 @@ const ChatPane = forwardRef((_, ref) => {
     const index=onlive.length;
 
     const steps = [
-      {count: getRandomInt(3, Math.min(8, msg.content.length-1)), char:"." },
+      {count: msg.isInterviewer?getRandomInt(3, Math.min(8, msg.content.length-1)):0, char:'.' },
       {count: msg.content.length, char:msg.content }
     ];
 
@@ -43,7 +43,7 @@ const ChatPane = forwardRef((_, ref) => {
     };
 
     for(const step of steps) for(let i=0; i<step.count; ++i) {
-      const c = typeof step.char==="string" ? step.char : step.char[i];
+      const c = step.char.length==1 ? step.char : step.char[i];
       setOnlive(prev=>updateContent(prev, i, c));
       await new Promise(res => setTimeout(res, (pauseMap[c]??bpause)/speed));
     }
@@ -53,7 +53,7 @@ const ChatPane = forwardRef((_, ref) => {
   
   const handleAnotherPlayerMessage = useCallback(
     async (s:string, onFinish?: ()=>void) => {
-      await playMessage({isInterviewer:false, content:s}, 0, onFinish);
+      await playMessage({isInterviewer:true, content:s}, 1, onFinish);
     },
     [onlive.length]
   );
