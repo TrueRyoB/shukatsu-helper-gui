@@ -1,5 +1,6 @@
 import {useState, useCallback, useImperativeHandle, forwardRef} from 'react'
 import {getRandomInt} from '../utils/math'
+import {getFileContextAsync, pickRandom} from '../utils/parse'
 
 type Message = {
   isInterviewer:boolean,
@@ -19,6 +20,7 @@ const ChatPane = forwardRef((_, ref) => {
     "。": 400,
   };
 
+  // type Narrator = Message | {speed: number};
   const playMessage = async (msg: Message, speed: number, onFinish?: ()=>void): Promise<void> => {
     if(speed==0) {
       setOnlive((prev)=>[...prev, msg]);
@@ -53,36 +55,43 @@ const ChatPane = forwardRef((_, ref) => {
   
   const handleAnotherPlayerMessage = useCallback(
     async (s:string, onFinish?: ()=>void) => {
-      await playMessage({isInterviewer:true, content:s}, 1, onFinish);
+      await playMessage({isInterviewer:false, content:s}, 1, onFinish);
     },
     [onlive.length]
   );
 
   type Generator = {
-    poseQuestion(): Promise<void>,
+    poseQuestion(): Promise<boolean>,
     readonly shouldScroll: boolean;
   }
   //TODO: lastが最後の質問であれば、ありがとうございます。で締めて、ターンを継続する
   const createQuestionGenerator = (): Generator => {
-    let cnter:number = 1;
+    let cnter:number = 0;
     let nhukabori:number = 0;
+    const picked = new Set<number>;
+
     return {
-      async poseQuestion(onFinish?:()=>void) {
-        //1. 文章を抽選する
-        if(cnter>=nhukabori) {
-          cnter=0;
+      async poseQuestion(onFinish?:()=>void):Promise<boolean> {
+        let text:string="";
+        if(cnter==0) {
           nhukabori=getRandomInt(0, 3);
-          //TODO: fetch a problem from a text file
-        } else {
+          text = pickRandom(await getFileContextAsync()('/data/questions.txt'));
+        } else if(cnter<nhukabori) {
           ++cnter;
-          //TODO: fetch a problem from a hukabori file
+          text = pickRandom(await getFileContextAsync()('/data/hukabori.txt'));
+        } else {
+          text = "ありがとうございます。";
         }
-        let text:string = "test test test test test (x5)";
 
         await playMessage({isInterviewer:true, content:text}, 10, onFinish);
+        
+        if(cnter==nhukabori) {
+          cnter=0; return true;
+        }
+        return false;
       },
       get shouldScroll():boolean {
-        return cnter>=nhukabori;
+        return cnter==0;
       }
     };
   };
