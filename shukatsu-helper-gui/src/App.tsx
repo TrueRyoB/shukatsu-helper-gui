@@ -8,10 +8,10 @@ function App() {
   const round:number= 1;
   const totalround:number=10;
 
-  const chatRef = useRef<{insertNewPlayerMessage: (s:string, onFinish?:()=>void)=>void}>(null);
+  const chatRef = useRef<{handleAnotherPlayerMessage: (s:string, onFinish?:()=>void)=>void}>(null);
 
   const handleQuery = (s:string) => {
-    chatRef.current?.insertNewPlayerMessage(s, () => {
+    chatRef.current?.handleAnotherPlayerMessage(s, () => {
       console.log("text inserted");
     });
   };
