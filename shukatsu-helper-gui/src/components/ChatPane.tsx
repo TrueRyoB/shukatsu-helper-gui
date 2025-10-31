@@ -75,15 +75,16 @@ const ChatPane = forwardRef((_, ref) => {
         let text:string="";
         if(cnter==0) {
           nhukabori=getRandomInt(0, 3);
-          text = pickRandom(await getFileContextAsync()('/data/questions.txt'));
+          text = pickRandom(await getFileContextAsync()('/shukatsu-helper-gui/data/questions.txt'));
+          ++cnter;
         } else if(cnter<nhukabori) {
           ++cnter;
-          text = pickRandom(await getFileContextAsync()('/data/hukabori.txt'));
+          text = pickRandom(await getFileContextAsync()('/shukatsu-helper-gui/data/hukabori.txt'));
         } else {
           text = "ありがとうございます。";
         }
 
-        await playMessage({isInterviewer:true, content:text}, 10, onFinish);
+        await playMessage({isInterviewer:true, content:text}, 1, onFinish);
         
         if(cnter==nhukabori) {
           cnter=0; return true;
@@ -107,7 +108,7 @@ const ChatPane = forwardRef((_, ref) => {
     <>
     {
       onlive.map((msg:Message, i:number)=>(
-        <div key={i} className={`${msg.isInterviewer?'text-blue-500':'text-black'} flex flex-row flex-wrap`}>
+        <div key={i} className={`${msg.isInterviewer?'text-blue-500':'text-black justify-end'} flex flex-row flex-wrap`}>
           {msg.content}
         </div>
       ))
