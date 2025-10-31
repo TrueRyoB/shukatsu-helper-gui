@@ -5,7 +5,7 @@ import AskBox from './components/AskBox'
 import ChatPane from './components/ChatPane'
 
 function App() {
-  const totalRound:number=10;
+  const totalRound:number=3;//10
 
   const chatRef = useRef<
   {
@@ -18,14 +18,13 @@ function App() {
 
   const handleQuery = (s:string) => {
     setInputEnabled(false);
-    setRound(round+1);
-    if(round<=totalRound) {
-        chatRef.current?.handleAnotherPlayerMessage(s, () => {
+    const next = round+1;
+    if(next<=totalRound) {
+      chatRef.current?.handleAnotherPlayerMessage(s, () => {
         chatRef.current?.poseQuestion(()=>setInputEnabled(true));
       });
-    } else {
-      console.log("overflew!");
     }
+    setRound(next);
   };
 
   const startInterview = async():Promise<void> => {
@@ -40,12 +39,12 @@ function App() {
         <div className="left-pane">
           <span>test</span>
         </div>
-        <div className="chat-pane">
+        <div className="chat-pane flex flex-col justify-center flex-grow">
           <div className="header">
             <span className="title">就活ヘルパGUI</span>
             <span className="import-svg"></span>
           </div>
-          <div className="main max-w-[800px] justify-self-center">
+          <div className="main w-full max-w-[800px] flex flex-col self-center">
             <span className={`counter ${round<1 ? 'hidden':''}`}>{round}/{totalRound}</span>
             <span onClick={startInterview} className={`${round<1?'center cursor-pointer':''} text-3xl`}>面接練習を始める</span>
             <ChatPane ref={chatRef} />

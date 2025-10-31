@@ -49,8 +49,7 @@ const ChatPane = forwardRef((_, ref) => {
       setOnlive(prev=>updateContent(prev, i, c));
       await new Promise(res => setTimeout(res, (pauseMap[c]??bpause)/speed));
     }
-    console.log("onlive.length ", onlive.length);
-
+    
     onFinish?.();
   };
   

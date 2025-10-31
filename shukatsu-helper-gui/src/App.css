@@ -49,12 +49,6 @@ h1 {
   font-size: 14px;
 }
 
-/* chat-pain */
-.chat-pane {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
 /*** header chat-pain ***/
 .chat-pane .header {
   display: flex;
@@ -72,12 +66,9 @@ h1 {
   color: #fff;
   font-size: 16px;
 }
-
 /*** main chat-pain ***/
 .chat-pane .main {
-  display: flex;
   position: relative;
-  flex-direction: column;
   gap: 10px;
   padding: 0 1rem;
   flex-grow: 1;
