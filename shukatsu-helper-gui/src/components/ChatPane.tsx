@@ -28,7 +28,6 @@ const ChatPane = forwardRef((_, ref) => {
     }
 
     setOnlive((prev)=>[...prev, {isInterviewer:msg.isInterviewer, content:""}]);
-    const index=onlive.length;
 
     const steps = [
       {count: msg.isInterviewer?getRandomInt(3, Math.min(8, msg.content.length-1)):0, char:'.' },
@@ -37,6 +36,7 @@ const ChatPane = forwardRef((_, ref) => {
 
     const updateContent = (prev: Message[], i:number, c:string):Message[] => {
       const newArr = [...prev];
+      const index = newArr.length-1;
       newArr[index] = {
         ...newArr[index],
         content: newArr[index].content.length<i ? newArr[index].content+c : newArr[index].content.slice(0, i)+c+newArr[index].content.slice(i+1),
@@ -49,13 +49,13 @@ const ChatPane = forwardRef((_, ref) => {
       setOnlive(prev=>updateContent(prev, i, c));
       await new Promise(res => setTimeout(res, (pauseMap[c]??bpause)/speed));
     }
+    console.log("onlive.length ", onlive.length);
 
     onFinish?.();
   };
   
   const handleAnotherPlayerMessage = useCallback(
     async (s:string, onFinish?: ()=>void) => {
-      console.log("onlive: ", onlive);
       await playMessage({isInterviewer:false, content:s}, 0, onFinish);
     },
     [onlive.length]

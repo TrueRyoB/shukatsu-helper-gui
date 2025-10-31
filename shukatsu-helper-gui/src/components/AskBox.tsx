@@ -22,7 +22,7 @@ const AskBox = (props:AskBoxProps) => {
     if(event.key=='Escape') {
       event.preventDefault(); return;
     }
-    if(event.shiftKey || event.key!='Enter') return;
+    if(event.shiftKey || event.key!='Enter' || !inputEnabled) return;
     
     if(isTyping) {
       submitQuery(query);
@@ -35,7 +35,7 @@ const AskBox = (props:AskBoxProps) => {
 
   return (
     <div className={`${inputEnabled?'':'cursor-not-allowed'} flex flex-row justify-between bg-black w-full px-[1.5rem] py-[1rem] rounded-[16px] max-w-[660px]`}>
-      <input className={`${inputEnabled?'':'pointer-events-none'} placeholder-white text-white flex-grow`} value={inputEnabled?query:'waiting......'} onChange={handleChange} onKeyDown={shootOnEnter} type="text" placeholder={PLACEHOLDER}/>
+      <input className={`${inputEnabled?'':'pointer-events-none'} placeholder-white text-white flex-grow`} value={inputEnabled?query:''} onChange={handleChange} onKeyDown={shootOnEnter} type="text" placeholder={inputEnabled?PLACEHOLDER:'waiting......'}/>
       <span className={`${isTyping?'send-svg':'mic-svg'} text-white rounded-[999px] bg-black hover:bg-white`}></span>
       {/* 自身の高さを自動調整 */}
     </div>

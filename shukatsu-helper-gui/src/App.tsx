@@ -23,6 +23,8 @@ function App() {
         chatRef.current?.handleAnotherPlayerMessage(s, () => {
         chatRef.current?.poseQuestion(()=>setInputEnabled(true));
       });
+    } else {
+      console.log("overflew!");
     }
   };
 
@@ -43,7 +45,7 @@ function App() {
             <span className="title">就活ヘルパGUI</span>
             <span className="import-svg"></span>
           </div>
-          <div className="main">
+          <div className="main max-w-[800px] justify-self-center">
             <span className={`counter ${round<1 ? 'hidden':''}`}>{round}/{totalRound}</span>
             <span onClick={startInterview} className={`${round<1?'center cursor-pointer':''} text-3xl`}>面接練習を始める</span>
             <ChatPane ref={chatRef} />
