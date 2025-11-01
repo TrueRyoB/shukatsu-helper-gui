@@ -72,24 +72,21 @@ const ChatPane = forwardRef((_, ref) => {
   //TODO: lastが最後の質問であれば、ありがとうございます。で締めて、ターンを継続する
   const createQuestionGenerator = (): Generator => {
     let cnter:number = 0;
-    let nhukabori:number = 0;
+    let nask:number = 0;
 
     return {
       async poseQuestion(onFinish?:()=>void):Promise<boolean> {
         let text:string="";
         if(cnter==0) {
-          nhukabori=getRandomInt(0, 3);
+          nask=getRandomInt(1, 4);
           text = pickRandom(await getFileContextAsync()('/shukatsu-helper-gui/data/questions.txt'));
-          ++cnter;
-        } else if(cnter<nhukabori) {
-          ++cnter;
-          text = pickRandom(await getFileContextAsync()('/shukatsu-helper-gui/data/hukabori.txt'));
         } else {
-          text = "ありがとうございます。";
+          text = pickRandom(await getFileContextAsync()('/shukatsu-helper-gui/data/hukabori.txt'));
         }
+        ++cnter;
 
         await playMessage({isInterviewer:true, content:text}, 1, onFinish);
-        if(cnter==nhukabori) {
+        if(cnter==nask) {
           cnter=0; return true;
         }
         return false;
