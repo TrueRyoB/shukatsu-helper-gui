@@ -18,8 +18,6 @@ function App() {
   const [round, setRound] = useState(0);
   const [inputEnabled, setInputEnabled] = useState(false);
 
-  const [chatlog, setChatlog] = useState("");
-
   const handleQuery = (s:string) => {
     setInputEnabled(false);
     const next = round+1;
@@ -30,8 +28,8 @@ function App() {
       } else {
         setRound(next);
         chatRef.current?.endInterview((s:string)=>{
-          setChatlog(s);
           console.log("interview is over");
+          console.log(s);
         });
       }
     });

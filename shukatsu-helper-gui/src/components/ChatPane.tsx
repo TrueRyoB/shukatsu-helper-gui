@@ -1,4 +1,4 @@
-import {useState, useCallback, useImperativeHandle, forwardRef, useEffect, useRef} from 'react'
+import {useState, useCallback, useImperativeHandle, forwardRef, useEffect, useRef, useMemo} from 'react'
 import {getRandomInt} from '../utils/math'
 import {getFileContextAsync, pickRandom} from '../utils/parse'
 
@@ -89,7 +89,6 @@ const ChatPane = forwardRef((_, ref) => {
         }
 
         await playMessage({isInterviewer:true, content:text}, 1, onFinish);
-        
         if(cnter==nhukabori) {
           cnter=0; return true;
         }
@@ -107,13 +106,13 @@ const ChatPane = forwardRef((_, ref) => {
     };
   };
 
-  const gen = createQuestionGenerator();
+  const gen = useMemo(()=>createQuestionGenerator(), []);
 
   useImperativeHandle(ref, ()=> ({
     handleAnotherPlayerMessage,
     poseQuestion: gen.poseQuestion,
     endInterview: gen.endInterview,
-  }));
+  }), []);
 
   return (
     <>
