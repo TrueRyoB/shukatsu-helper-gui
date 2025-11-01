@@ -5,12 +5,13 @@ import AskBox from './components/AskBox'
 import ChatPane from './components/ChatPane'
 
 function App() {
-  const totalRound:number=3;//10
+  const totalRound:number=2;
 
   const chatRef = useRef<
   {
     handleAnotherPlayerMessage: (s:string, onFinish?:()=>void)=>void,
     poseQuestion: (onFinish?:()=>void)=>void,
+    endInterview: (onFinish?:(s:string)=>void)=>void,
   }>(null);
 
   const [round, setRound] = useState(0);
@@ -19,12 +20,18 @@ function App() {
   const handleQuery = (s:string) => {
     setInputEnabled(false);
     const next = round+1;
-    if(next<=totalRound) {
-      chatRef.current?.handleAnotherPlayerMessage(s, () => {
+    chatRef.current?.handleAnotherPlayerMessage(s, () => {
+      if(next<=totalRound) {
         chatRef.current?.poseQuestion(()=>setInputEnabled(true));
-      });
-    }
-    setRound(next);
+        setRound(next);
+      } else {
+        chatRef.current?.endInterview((s:string)=>{
+          console.log("interview is over");
+          console.log("log: ", s);
+        });
+        //TODO: 終了フラグ
+      }
+    });
   };
 
   const startInterview = async():Promise<void> => {

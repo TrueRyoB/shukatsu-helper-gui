@@ -1,4 +1,4 @@
-import {useState, useCallback, useImperativeHandle, forwardRef} from 'react'
+import {useState, useCallback, useImperativeHandle, forwardRef, useEffect, useRef} from 'react'
 import {getRandomInt} from '../utils/math'
 import {getFileContextAsync, pickRandom} from '../utils/parse'
 
@@ -9,6 +9,11 @@ type Message = {
 
 const ChatPane = forwardRef((_, ref) => {
   const [onlive, setOnlive] = useState<Message[]>([]);
+  const onliveRef = useRef<Message[]>([]);
+
+  useEffect(()=> {
+    onliveRef.current = onlive;
+  }, [onlive]);
 
   const bpause=40;
   const pauseMap : Record<string, number> = {
@@ -49,7 +54,6 @@ const ChatPane = forwardRef((_, ref) => {
       setOnlive(prev=>updateContent(prev, i, c));
       await new Promise(res => setTimeout(res, (pauseMap[c]??bpause)/speed));
     }
-    
     onFinish?.();
   };
   
@@ -62,7 +66,8 @@ const ChatPane = forwardRef((_, ref) => {
 
   type Generator = {
     poseQuestion(): Promise<boolean>,
-    readonly shouldScroll: boolean;
+    readonly shouldScroll: boolean,
+    endInterview(): Promise<void>;
   }
   //TODO: lastが最後の質問であれば、ありがとうございます。で締めて、ターンを継続する
   const createQuestionGenerator = (): Generator => {
@@ -92,6 +97,12 @@ const ChatPane = forwardRef((_, ref) => {
       },
       get shouldScroll():boolean {
         return cnter==0;
+      },
+      async endInterview(onFinish?:(s:string)=>void):Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 0));
+        const res:string = onliveRef.current.map((msg:Message)=>(msg.isInterviewer?'Q:':'A:')+msg.content).join('\n');
+        await playMessage({isInterviewer:true, content:"これで、本日の面接練習は以上となります。貴重なお時間をいただきまして、ありがとうございました。"}, 1, ()=>{});
+        onFinish?.(res);
       }
     };
   };
@@ -101,6 +112,7 @@ const ChatPane = forwardRef((_, ref) => {
   useImperativeHandle(ref, ()=> ({
     handleAnotherPlayerMessage,
     poseQuestion: gen.poseQuestion,
+    endInterview: gen.endInterview,
   }));
 
   return (
