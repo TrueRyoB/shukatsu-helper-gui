@@ -3,6 +3,7 @@ import './App.css'
 import './assets/reset.css'
 import AskBox from './components/AskBox'
 import ChatPane from './components/ChatPane'
+import FollowupIcon, {STATUS} from './components/FollowupIcon'
 
 function App() {
   const totalRound:number=2;
@@ -17,19 +18,21 @@ function App() {
   const [round, setRound] = useState(0);
   const [inputEnabled, setInputEnabled] = useState(false);
 
+  const [chatlog, setChatlog] = useState("");
+
   const handleQuery = (s:string) => {
     setInputEnabled(false);
     const next = round+1;
     chatRef.current?.handleAnotherPlayerMessage(s, () => {
       if(next<=totalRound) {
-        chatRef.current?.poseQuestion(()=>setInputEnabled(true));
         setRound(next);
+        chatRef.current?.poseQuestion(()=>setInputEnabled(true));
       } else {
+        setRound(next);
         chatRef.current?.endInterview((s:string)=>{
+          setChatlog(s);
           console.log("interview is over");
-          console.log("log: ", s);
         });
-        //TODO: 終了フラグ
       }
     });
   };
@@ -49,10 +52,10 @@ function App() {
         <div className="chat-pane flex flex-col justify-center flex-grow">
           <div className="header">
             <span className="title">就活ヘルパGUI</span>
-            <span className="import-svg"></span>
+            <FollowupIcon status={round==0?STATUS.Settings:round<=totalRound?STATUS.Amend:STATUS.Import} />
           </div>
           <div className="main w-full max-w-[800px] flex flex-col self-center">
-            <span className={`counter ${round<1 ? 'hidden':''}`}>{round}/{totalRound}</span>
+            <span className={`counter ${round<1 ? 'hidden':''}`}>{Math.min(round, totalRound)}/{totalRound}</span>
             <span onClick={startInterview} className={`${round<1?'center cursor-pointer':''} text-3xl`}>面接練習を始める</span>
             <ChatPane ref={chatRef} />
           </div>

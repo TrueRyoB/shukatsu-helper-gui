@@ -119,7 +119,7 @@ const ChatPane = forwardRef((_, ref) => {
     <>
     {
       onlive.map((msg:Message, i:number)=>(
-        <div key={i} className={`${msg.isInterviewer?'text-blue-500':'text-black justify-end'} flex flex-row flex-wrap`}>
+        <div key={i} className={`${msg.isInterviewer?'text-blue-500 text-left':'text-black justify-end text-right'} flex flex-row flex-wrap`}>
           {msg.content}
         </div>
       ))

@@ -1,29 +1,4 @@
-[class*="-svg"] {
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
-
-  display: flex;
-  flex-shrink: 0;
-  cursor: pointer;
-
-  width: 1.3em;
-  height: 1.3em;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  background-color: currentColor;
-}
-
-.import-svg {
-  mask-image: url(./import.svg);
-}
-.mic-svg {
-  mask-image: url(./mic.svg);
-}
-.send-svg {
-  mask-image: url(./send.svg);
-}
+@import './icons.css';
 
 html, body, div, span{
   margin: 0;
